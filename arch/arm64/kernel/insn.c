@@ -235,24 +235,6 @@ int __kprobes aarch64_insn_patch_text(void *addrs[], u32 insns[], int cnt)
 				       cpu_online_mask);
 }
 
-int __kprobes aarch64_insn_patch_text(void *addrs[], u32 insns[], int cnt)
-{
-	int ret;
-	u32 insn;
-
-	/* Unsafe to patch multiple instructions without synchronizaiton */
-	if (cnt == 1) {
-		ret = aarch64_insn_read(addrs[0], &insn);
-		if (ret)
-			return ret;
-
-		if (aarch64_insn_hotpatch_safe(insn, insns[0]))
-			return aarch64_insn_patch_text_nosync(addrs[0], insns[0]);
-	}
-
-	return aarch64_insn_patch_text_sync(addrs, insns, cnt);
-}
-
 static int __kprobes aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
 						u32 *maskp, int *shiftp)
 {
