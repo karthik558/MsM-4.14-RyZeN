@@ -22,7 +22,7 @@
 */
 
 #ifdef CONFIG_TAS2563_CODEC
-#define DEBUG
+
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
@@ -822,11 +822,11 @@ static int fw_parse_block_data(struct tas2563_priv *pTAS2563, struct TFirmware *
 	unsigned char *pDataStart = pData;
 	unsigned int n;
 
-	dev_info(pTAS2563->dev, "%s, %d", __func__, __LINE__);
+	dev_dbg(pTAS2563->dev, "%s, %d", __func__, __LINE__);
 
 	pBlock->mnType = fw_convert_number(pData);
 	pData += 4;
-	dev_info(pTAS2563->dev, "%s, %d", __func__, __LINE__);
+	dev_dbg(pTAS2563->dev, "%s, %d", __func__, __LINE__);
 
 	if (pFirmware->mnDriverVersion >= PPC_DRIVER_CRCCHK) {
 		pBlock->mbPChkSumPresent = pData[0];
@@ -851,7 +851,7 @@ static int fw_parse_block_data(struct tas2563_priv *pTAS2563, struct TFirmware *
 	n = pBlock->mnCommands * 4;
 	pBlock->mpData = kmemdup(pData, n, GFP_KERNEL);
 	pData += n;
-	dev_info(pTAS2563->dev, "%s, %d", __func__, __LINE__);
+	dev_dbg(pTAS2563->dev, "%s, %d", __func__, __LINE__);
 	return pData - pDataStart;
 }
 
@@ -862,7 +862,7 @@ static int fw_parse_data(struct tas2563_priv *pTAS2563, struct TFirmware *pFirmw
 	unsigned int nBlock;
 	unsigned int n;
 
-	dev_info(pTAS2563->dev, "%s, %d", __func__, __LINE__);
+	dev_dbg(pTAS2563->dev, "%s, %d", __func__, __LINE__);
 	memcpy(pImageData->mpName, pData, 64);
 	pData += 64;
 
@@ -973,11 +973,11 @@ static int fw_parse_configuration_data(struct tas2563_priv *pTAS2563,
 
 		pConfiguration->mnProgram = pData[0];
 		pData++;
-		dev_info(pTAS2563->dev, "configuration, mnProgram: %d", pConfiguration->mnProgram);
+		dev_dbg(pTAS2563->dev, "configuration, mnProgram: %d", pConfiguration->mnProgram);
 
 		pConfiguration->mnSamplingRate = fw_convert_number(pData);
 		pData += 4;
-		dev_info(pTAS2563->dev, "configuration samplerate: %d", pConfiguration->mnSamplingRate);
+		dev_dbg(pTAS2563->dev, "configuration samplerate: %d", pConfiguration->mnSamplingRate);
 
 		//if (pFirmware->mnDriverVersion >= PPC_DRIVER_MTPLLSRC) {
 			pConfiguration->mnPLLSrc = pData[0];
@@ -989,7 +989,7 @@ static int fw_parse_configuration_data(struct tas2563_priv *pTAS2563,
 
 		pConfiguration->mnFsRate = (pData[0] << 8) + pData[1];
 		pData += 2;
-		dev_info(pTAS2563->dev, "Fs rate: %d", pConfiguration->mnFsRate);
+		dev_dbg(pTAS2563->dev, "Fs rate: %d", pConfiguration->mnFsRate);
 
 		n = fw_parse_data(pTAS2563, pFirmware, &(pConfiguration->mData), pData);
 		pData += n;

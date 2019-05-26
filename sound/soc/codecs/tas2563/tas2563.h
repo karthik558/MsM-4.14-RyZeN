@@ -851,4 +851,10 @@ struct tas2563_priv {
 #endif
 };
 
+#undef dev_dbg
+#define dev_dbg { do { } while (0); }
+
+#undef dev_info
+#define dev_info { do { } while (0); }
+
 #endif /* __TAS2563_ */

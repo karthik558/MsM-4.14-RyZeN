@@ -22,7 +22,6 @@
 
 #ifdef CONFIG_TAS2563_MISC
 
-#define DEBUG
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
