@@ -157,7 +157,7 @@ static bool get_dload_mode(void)
 	return dload_mode_enabled;
 }
 
-static void enable_emergency_dload_mode(void)
+static __maybe_unused void enable_emergency_dload_mode(void)
 {
 	int ret;
 
@@ -339,7 +339,7 @@ static void msm_restart_prepare(const char *cmd)
 				__raw_writel(0x6f656d00 | (code & 0xff),
 					     restart_reason);
 		} else if (!strncmp(cmd, "edl", 3)) {
-			enable_emergency_dload_mode();
+			pr_info("Rebooting to EDL is unavailable\n");
 		} else {
 			__raw_writel(0x77665501, restart_reason);
 		}
