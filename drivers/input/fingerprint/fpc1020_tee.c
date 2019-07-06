@@ -622,20 +622,20 @@ static int fpc1020_probe(struct platform_device *pdev)
 	size_t i;
 	int irqf;
 	struct device_node *np = dev->of_node;
-	struct fpc1020_data *fpc1020 = devm_kzalloc(dev, sizeof(*fpc1020),
-			GFP_KERNEL);
-	if (!fpc1020) {
-		dev_err(dev,
-			"failed to allocate memory for struct fpc1020_data\n");
-		rc = -ENOMEM;
-		goto exit;
-	}
+	struct fpc1020_data *fpc1020 = NULL;
 
 	if(fpsensor != 1){
                  pr_err("Macle fpc1020_probe failed as fpsensor=%d(1=fp)\n", fpsensor);
                  return -1;
          }
 
+	fpc1020 = devm_kzalloc(dev, sizeof(*fpc1020), GFP_KERNEL);
+	if (!fpc1020) {
+		dev_err(dev,
+			"failed to allocate memory for struct fpc1020_data\n");
+		rc = -ENOMEM;
+		goto exit;
+	}
 
 	fpc1020->dev = dev;
 	platform_set_drvdata(pdev, fpc1020);
