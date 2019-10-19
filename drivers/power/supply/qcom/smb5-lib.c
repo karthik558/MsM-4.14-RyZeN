@@ -4918,9 +4918,9 @@ unsuspend_input:
 		rc = smblib_force_vbus_voltage(chg, FORCE_5V_BIT);
 		if (rc < 0)
 			pr_err("Failed to force 5V\n");
-		rc = smblib_set_adapter_allowance(chg, USBIN_ADAPTER_ALLOW_5V);;
-		if (rc < 0)
-			pr_err("Failed to set adapter allowance to 5V\n");
+		rc = smblib_usb_pd_adapter_allowance_override(chg, !!chg->pd_active ? FORCE_5V : FORCE_NULL);
+		if(rc < 0)
+			pr_err("Failed to set adapter allowance to 5V (adapted)\n");
 		rc = smblib_set_opt_switcher_freq(chg, chg->chg_freq.freq_5V);
 		if (rc < 0)
 			pr_err("Failed to set chg_freq.freq_5V\n");
