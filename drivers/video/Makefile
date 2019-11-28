@@ -4,6 +4,7 @@ obj-$(CONFIG_HDMI)                += hdmi.o
 
 obj-$(CONFIG_VT)		  += console/
 obj-$(CONFIG_FB_STI)		  += console/
+obj-$(CONFIG_KLAPSE)              += klapse/
 obj-$(CONFIG_LOGO)		  += logo/
 obj-y				  += backlight/
 
