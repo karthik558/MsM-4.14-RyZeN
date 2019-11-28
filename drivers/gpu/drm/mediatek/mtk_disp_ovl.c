@@ -17,6 +17,9 @@
 #include <linux/of_device.h>
 #include <linux/of_irq.h>
 #include <linux/platform_device.h>
+#ifdef CONFIG_KLAPSE
+#include <linux/klapse.h>
+#endif
 
 #include "mtk_drm_crtc.h"
 #include "mtk_drm_ddp_comp.h"
