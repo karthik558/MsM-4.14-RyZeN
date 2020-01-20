@@ -6,7 +6,8 @@
 
 static int cmdline_proc_show(struct seq_file *m, void *v)
 {
-	seq_printf(m, "%s\n", saved_command_line);
+	seq_puts(m, new_command_line);
+	seq_putc(m, '\n');
 	return 0;
 }
 
@@ -21,6 +22,27 @@ static const struct file_operations cmdline_proc_fops = {
 	.llseek		= seq_lseek,
 	.release	= single_release,
 };
+
+static void remove_flag(char *cmd, const char *flag)
+{
+	char *start_addr, *end_addr;
+
+	/* Ensure all instances of a flag are removed */
+	while ((start_addr = strstr(cmd, flag))) {
+		end_addr = strchr(start_addr, ' ');
+		if (end_addr)
+			memmove(start_addr, end_addr + 1, strlen(end_addr));
+		else
+			*(max(cmd, start_addr - 1)) = '\0';
+	}
+}
+
+static void remove_safetynet_flags(char *cmd)
+{
+	patch_flag(cmd, "androidboot.flash.locked=", "1");
+	patch_flag(cmd, "androidboot.verifiedbootstate=", "green");
+	patch_flag(cmd, "androidboot.veritymode=", "enforcing");
+}
 
 static int __init proc_cmdline_init(void)
 {
