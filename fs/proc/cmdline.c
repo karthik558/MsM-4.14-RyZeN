@@ -9,7 +9,8 @@ static char new_command_line[COMMAND_LINE_SIZE];
 
 static int cmdline_proc_show(struct seq_file *m, void *v)
 {
-	seq_printf(m, "%s\n", new_command_line);
+	seq_puts(m, new_command_line);
+	seq_putc(m, '\n');
 	return 0;
 }
 
@@ -41,8 +42,9 @@ static void remove_flag(char *cmd, const char *flag)
 
 static void remove_safetynet_flags(char *cmd)
 {
-	remove_flag(cmd, "androidboot.verifiedbootstate=");
-	remove_flag(cmd, "androidboot.veritymode=");
+	patch_flag(cmd, "androidboot.flash.locked=", "1");
+	patch_flag(cmd, "androidboot.verifiedbootstate=", "green");
+	patch_flag(cmd, "androidboot.veritymode=", "enforcing");
 }
 
 static int __init proc_cmdline_init(void)
