@@ -10,3 +10,6 @@ obj-$(CONFIG_POSIX_MQUEUE) += mqueue.o msgutil.o
 obj-$(CONFIG_IPC_NS) += namespace.o
 obj-$(CONFIG_POSIX_MQUEUE_SYSCTL) += mq_sysctl.o
 
+# optimise for size
+ccflags-y += $(call cc-option, -g0)
+ccflags-y += $(call cc-option, -Os)
