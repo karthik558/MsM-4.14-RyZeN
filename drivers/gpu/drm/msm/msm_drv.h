@@ -253,6 +253,18 @@ enum msm_display_caps {
 };
 
 /**
+ * enum panel_mode - panel operation mode
+ * @MSM_DISPLAY_VIDEO_MODE: video mode panel
+ * @MSM_DISPLAY_CMD_MODE:   Command mode panel
+ * @MODE_MAX:
+ */
+enum panel_op_mode {
+	MSM_DISPLAY_VIDEO_MODE = 0,
+	MSM_DISPLAY_CMD_MODE,
+	MSM_DISPLAY_MODE_MAX,
+};
+
+/**
  * enum msm_event_wait - type of HW events to wait for
  * @MSM_ENC_COMMIT_DONE - wait for the driver to flush the registers to HW
  * @MSM_ENC_TX_COMPLETE - wait for the HW to transfer the frame to panel
@@ -492,6 +504,7 @@ struct msm_mode_info {
 struct msm_display_info {
 	int intf_type;
 	uint32_t capabilities;
+	enum panel_op_mode curr_panel_mode;
 
 	uint32_t num_of_h_tiles;
 	uint32_t h_tile_instance[MAX_H_TILES_PER_DISPLAY];
@@ -989,4 +1002,7 @@ static inline unsigned long timeout_to_jiffies(const ktime_t *timeout)
 	return remaining_jiffies;
 }
 
+int msm_get_mixer_count(struct msm_drm_private *priv,
+		const struct drm_display_mode *mode,
+		u32 max_mixer_width, u32 *num_lm);
 #endif /* __MSM_DRV_H__ */
