@@ -16,13 +16,3 @@ PATH="$MPATH" make -j4 O=out \
         OBJDUMP=llvm-objdump \
         STRIP=llvm-strip
         2>&1 | tee error.log
-
-cp out/arch/arm64/boot/Image.gz-dtb flasher/ 2>/dev/null
-cd flasher
-if [ -f "Image.gz-dtb" ]; then
-    zip -r Karthik++-$(date).zip *
-    mv Karthik++*.zip ..
-    echo "Build success!"
-else
-    echo "Build failed!"
-fi
