@@ -549,7 +549,7 @@ void ConfigList::setRootMenu(struct menu *menu)
 	rootEntry = menu;
 	updateListAll();
 	if (currentItem()) {
-		currentItem()->setSelected(hasFocus());
+		setSelected(currentItem(), hasFocus());
 		scrollToItem(currentItem());
 	}
 }
@@ -871,7 +871,7 @@ void ConfigList::focusInEvent(QFocusEvent *e)
 
 	ConfigItem* item = (ConfigItem *)currentItem();
 	if (item) {
-		item->setSelected(true);
+		setSelected(item, true);
 		menu = item->menu;
 	}
 	emit gotFocus(menu);
@@ -1599,17 +1599,10 @@ void ConfigMainWindow::setMenuLink(struct menu *menu)
 			if (!parent)
 				return;
 
-			/* Clear an already-selected item */
-			if (!configList->selectedItems().isEmpty()) {
-				item = (ConfigItem*)configList->selectedItems().first();
-				if (item)
-					item->setSelected(false);
-			}
-
 			/* Select the config view */
 			item = configList->findConfigItem(parent);
 			if (item) {
-				item->setSelected(true);
+				configList->setSelected(item, true);
 				configList->scrollToItem(item);
 			}
 
@@ -1628,7 +1621,7 @@ void ConfigMainWindow::setMenuLink(struct menu *menu)
 	if (list) {
 		item = list->findConfigItem(menu);
 		if (item) {
-			item->setSelected(true);
+			list->setSelected(item, true);
 			list->scrollToItem(item);
 			list->setFocus();
 		}
