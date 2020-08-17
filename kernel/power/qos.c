@@ -272,7 +272,7 @@ static inline void pm_qos_set_value_for_cpus(struct pm_qos_constraints *c,
 {
 	struct pm_qos_request *req = NULL;
 	int cpu;
-	s32 qos_val[NR_CPUS] = { [0 ... (NR_CPUS - 1)] = c->default_value };
+	s32 qos_val[NR_CPUS] = { [0 ... 3] = c->default_value };
 
 	plist_for_each_entry(req, &c->list, node) {
 		for_each_cpu(cpu, &req->cpus_affine) {
