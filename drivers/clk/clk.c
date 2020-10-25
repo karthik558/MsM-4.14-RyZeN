@@ -4010,6 +4010,7 @@ void clk_unregister(struct clk *clk)
 			clk_core_set_parent(child, NULL);
 	}
 
+
 	hlist_del_init(&clk->core->child_node);
 
 	if (clk->core->prepare_count)
