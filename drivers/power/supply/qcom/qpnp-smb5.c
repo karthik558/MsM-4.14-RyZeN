@@ -413,8 +413,8 @@ static int smb5_parse_dt(struct smb5 *chip)
 		chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_PL ||
 		chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_CP_PL;
 
-        /* disable step_chg */
-        chg->step_chg_enabled = false;
+	chg->step_chg_enabled = of_property_read_bool(node,
+				"qcom,step-charging-enable");
 
 	chg->typec_legacy_use_rp_icl = of_property_read_bool(node,
 				"qcom,typec-legacy-rp-icl");
@@ -1632,8 +1632,7 @@ static int smb5_batt_get_prop(struct power_supply *psy,
 		rc = smblib_get_prop_input_current_limited(chg, val);
 		break;
 	case POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED:
-		/* disable step_chg */
-		chg->step_chg_enabled = false;
+		val->intval = chg->step_chg_enabled;
 		break;
 	case POWER_SUPPLY_PROP_SW_JEITA_ENABLED:
 		val->intval = chg->sw_jeita_enabled;
@@ -1776,8 +1775,7 @@ static int smb5_batt_set_prop(struct power_supply *psy,
 			val->intval);
 		break;
 	case POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED:
-                /* disable step_chg */
-                chg->step_chg_enabled = false;
+		chg->step_chg_enabled = !!val->intval;
 		break;
 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		chg->batt_profile_fcc_ua = val->intval;
