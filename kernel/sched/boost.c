@@ -15,7 +15,6 @@
 #include <linux/of.h>
 #include <linux/sched/core_ctl.h>
 #include <trace/events/sched.h>
-#include <linux/battery_saver.h>
 
 /*
  * Scheduler boost is a mechanism to temporarily place tasks on CPUs
@@ -225,9 +224,6 @@ static void _sched_set_boost(int type)
 		reset_stune_boost("top-app", boost_slot_ta);
 		reset_stune_boost("foreground", boost_slot_fg);
 	}
-
-	if (is_battery_saver_on())
-		goto skip_boost;
 
 	if (type == 1) { /* FULL_THROTTLE_BOOST */
 		do_stune_boost("top-app", 20, &boost_slot_ta);
