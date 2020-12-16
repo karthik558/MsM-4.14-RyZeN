@@ -2112,6 +2112,9 @@ static void msm_pdev_shutdown(struct platform_device *pdev)
 
 	/* set this after lastclose to allow kickoff from lastclose */
 	priv->shutdown_in_progress = true;
+	struct drm_device *drm = platform_get_drvdata(pdev);
+
+	drm_atomic_helper_shutdown(drm);
 }
 
 static const struct of_device_id dt_match[] = {
