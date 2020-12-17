@@ -922,20 +922,6 @@
 		l3-devs = <&cpu0_cpu_l3_lat &cpu6_cpu_l3_lat
 			&cdsp_cdsp_l3_lat &msm_gpu>;
 		#clock-cells = <1>;
-		qcom,cpufreq-table-0 =
-			< 576000>,
-			<1017600>,
-			<1209600>,
-			<1516800>,
-			<1708800>;
-			
-		qcom,cpufreq-table-6 =
-			< 652800>,
-			< 979200>,
-			<1209600>,
-			<1516800>,
-			<1708800>,
-			<2016000>;
 	};
 
 	clock_debugcc: qcom,cc-debug {
