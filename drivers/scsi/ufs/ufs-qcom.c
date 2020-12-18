@@ -2680,8 +2680,8 @@ int ufs_qcom_testbus_config(struct ufs_qcom_host *host)
 
 	spin_unlock_irqrestore(hba->host->host_lock, flags);
 	if (reg) {
-		ufshcd_rmwl(host->hba, TEST_BUS_SEL,
-		    (u32)host->testbus.select_major << testbus_sel_offset,
+	ufshcd_rmwl(host->hba, TEST_BUS_SEL,
+		    (u32)host->testbus.select_major << 19,
 		    REG_UFS_CFG1);
 		ufshcd_rmwl(host->hba, mask,
 		    (u32)host->testbus.select_minor << offset,
@@ -2698,7 +2698,7 @@ int ufs_qcom_testbus_config(struct ufs_qcom_host *host)
 	 */
 	mb();
 out:
-	return ret;
+	return 0;
 }
 
 static void ufs_qcom_testbus_read(struct ufs_hba *hba)
