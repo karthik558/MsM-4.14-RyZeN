@@ -974,9 +974,6 @@ static int genl_bind(struct net *net, int group)
 
 			if (!f->netnsok && net != &init_net)
 				err = -ENOENT;
-			else if (f->mcast_bind)
-				err = f->mcast_bind(net, fam_grp);
-			else
 				err = 0;
 			break;
 		}
@@ -998,8 +995,6 @@ static void genl_unbind(struct net *net, int group)
 		    group < f->mcgrp_offset + f->n_mcgrps) {
 			int fam_grp = group - f->mcgrp_offset;
 
-			if (f->mcast_unbind)
-				f->mcast_unbind(net, fam_grp);
 			break;
 		}
 	}
@@ -1011,6 +1006,8 @@ static int __net_init genl_pernet_init(struct net *net)
 	struct netlink_kernel_cfg cfg = {
 		.input		= genl_rcv,
 		.flags		= NL_CFG_F_NONROOT_RECV,
+                .bind		= genl_bind,
+		.unbind		= genl_unbind,
 	};
 
 	/* we'll bump the group number right afterwards */
