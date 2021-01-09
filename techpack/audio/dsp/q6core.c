@@ -467,7 +467,6 @@ struct cal_block_data *cal_utils_get_cal_block_by_key(
 	return NULL;
 }
 
-#ifndef CONFIG_MACH_XIAOMI
 static int q6core_send_get_avcs_fwk_ver_cmd(void)
 {
 	struct apr_hdr avcs_ver_cmd;
@@ -670,14 +669,6 @@ int q6core_get_avcs_api_version_per_service(uint32_t service_id)
 	return -EINVAL;
 }
 EXPORT_SYMBOL(q6core_get_avcs_api_version_per_service);
-
-#else
-int q6core_get_service_version(uint32_t service_id,
-			       struct avcs_fwk_ver_info *ver_info,
-			       size_t size) { return -1; }
-int q6core_get_avcs_api_version_per_service(uint32_t service_id)
-    { return 1; }
-#endif
 
 /**
  * core_set_license -
