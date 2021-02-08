@@ -398,6 +398,7 @@ int qg_get_battery_current(struct qpnp_qg *chip, int *ibat_ua)
 
 	last_ibat = sign_extend32(last_ibat, 15);
 	*ibat_ua = qg_iraw_to_ua(chip, last_ibat);
+	*ibat_ua = -*ibat_ua;
 
 release:
 	/* release */
