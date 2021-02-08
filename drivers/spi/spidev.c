@@ -662,17 +662,6 @@ static int spidev_release(struct inode *inode, struct file *filp)
 	spidev->users--;
 	if (!spidev->users) {
 
-		spin_lock_irq(&spidev->spi_lock);
-		if (spidev->spi)
-			spidev->speed_hz = spidev->spi->max_speed_hz;
-
-		/* ... after we unbound from the underlying device? */
-		kfree(spidev->tx_buffer);
-		spidev->tx_buffer = NULL;
-
-		kfree(spidev->rx_buffer);
-		spidev->rx_buffer = NULL;
-
 		if (dofree)
 			kfree(spidev);
 		else
