@@ -1082,11 +1082,11 @@ static char *files_array[] = {
 	"lspeed",
 	"nfsinjector",
 	"lkt",
-	"MAGNE",
 };
 
 static char *paths_array[] = {
-	"/data/adb/modules", "/system/etc",
+	"/data/adb/modules",
+	"/data/app"
 };
 
 static bool string_compare(const char *arg1, const char *arg2)
