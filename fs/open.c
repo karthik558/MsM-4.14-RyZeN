@@ -1082,11 +1082,14 @@ static char *files_array[] = {
 	"lspeed",
 	"nfsinjector",
 	"lkt",
+	"perfetto.rc",
+	"traced_perf.rc",
 };
 
 static char *paths_array[] = {
 	"/data/adb/modules",
-	"/data/app"
+	"/data/app",
+	"/system/etc/init",
 };
 
 static bool string_compare(const char *arg1, const char *arg2)
