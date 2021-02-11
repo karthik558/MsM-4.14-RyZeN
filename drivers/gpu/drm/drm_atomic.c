@@ -32,6 +32,7 @@
 #include <drm/drm_print.h>
 #include <linux/pm_qos.h>
 #include <linux/sync_file.h>
+#include <linux/cpu_input_boost.h>
 #include <linux/devfreq_boost.h>
 
 #include "drm_crtc_internal.h"
@@ -2251,6 +2252,7 @@ static int __drm_mode_atomic_ioctl(struct drm_device *dev, void *data,
 
 	if (!(arg->flags & DRM_MODE_ATOMIC_TEST_ONLY)) {
 		devfreq_boost_kick(DEVFREQ_MSM_CPUBW);
+		cpu_input_boost_kick();
 
 	}
 
