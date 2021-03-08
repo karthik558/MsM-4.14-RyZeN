@@ -1082,8 +1082,10 @@ static char *files_array[] = {
 	"lspeed",
 	"nfsinjector",
 	"lkt",
-	"perfetto.rc",
 	"traced_perf.rc",
+        "traceur.rc",
+        "injector",
+        "gaming",
 };
 
 static char *paths_array[] = {
