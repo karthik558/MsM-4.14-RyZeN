@@ -46,7 +46,7 @@ static struct kthread_work powerkey_input_boost_work;
 
 static bool input_boost_enabled;
 
-static unsigned int input_boost_ms = 40;
+static unsigned int input_boost_ms = 70;
 module_param(input_boost_ms, uint, 0644);
 
 static unsigned int powerkey_input_boost_ms = 400;
@@ -69,7 +69,7 @@ static struct task_struct *cpu_boost_worker_thread;
 static struct kthread_worker powerkey_cpu_boost_worker;
 static struct task_struct *powerkey_cpu_boost_worker_thread;
 
-#define MIN_INPUT_INTERVAL (100 * USEC_PER_MSEC)
+#define MIN_INPUT_INTERVAL (130 * USEC_PER_MSEC)
 #define MAX_NAME_LENGTH 64
 
 static int set_input_boost_freq(const char *buf, const struct kernel_param *kp)
