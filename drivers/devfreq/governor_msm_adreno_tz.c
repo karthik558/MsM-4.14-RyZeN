@@ -20,7 +20,6 @@
 #include <linux/ftrace.h>
 #include <linux/mm.h>
 #include <linux/msm_adreno_devfreq.h>
-#include <linux/display_state.h>
 #include <asm/cacheflush.h>
 #include <soc/qcom/scm.h>
 #include "governor.h"
@@ -66,10 +65,6 @@ static unsigned int adrenoboost = 0;
 static u64 suspend_time;
 static u64 suspend_start;
 static unsigned long acc_total, acc_relative_busy;
-
-/* Display and suspend state booleans */
-static bool display_on;
-static bool suspended = false;
 
 /*
  * Returns GPU suspend time in millisecond.
@@ -407,15 +402,6 @@ extern int adreno_idler(struct devfreq_dev_status stats, struct devfreq *devfreq
 
 	*freq = stats.current_frequency;
 
-	/*
-	 * Force to use & record as min freq when system has
-	 * entered pm-suspend or screen-off state.
-	 */
-	if (suspended || !display_on) {
-		*freq = devfreq->profile->freq_table[devfreq->profile->max_state - 1];
-		return 0;
-	}
-
 #ifdef CONFIG_ADRENO_IDLER
 	if (adreno_idler(stats, devfreq, freq)) {
 		/* adreno_idler has asked to bail out now */
@@ -554,12 +540,9 @@ static int tz_suspend(struct devfreq *devfreq)
 	unsigned int scm_data[2] = {0, 0};
 
 	__secure_tz_reset_entry2(scm_data, sizeof(scm_data), priv->is_64);
-	display_on = is_display_on();
-	suspended = true;
 
 	priv->bin.total_time = 0;
 	priv->bin.busy_time = 0;
-
 	return 0;
 }
 
@@ -592,8 +575,6 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 	case DEVFREQ_GOV_RESUME:
 		spin_lock(&suspend_lock);
 		suspend_time += suspend_time_ms();
-		display_on = is_display_on();
-		suspended = false;
 		/* Reset the suspend_start when gpu resumes */
 		suspend_start = 0;
 		spin_unlock(&suspend_lock);
