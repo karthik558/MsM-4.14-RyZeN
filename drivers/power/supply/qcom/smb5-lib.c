@@ -1971,6 +1971,7 @@ int smblib_get_prop_batt_status(struct smb_charger *chg,
 				union power_supply_propval *val)
 {
 	union power_supply_propval pval = {0, };
+	union power_supply_propval batt_capa ={0,};
 	bool usb_online, dc_online;
 	u8 stat;
 	int batt_health, rc, suspend = 0;
@@ -2019,6 +2020,11 @@ int smblib_get_prop_batt_status(struct smb_charger *chg,
 		return rc;
 	}
 	usb_online = (bool)pval.intval;
+	
+	rc = smblib_get_prop_from_bms(chg,
+			POWER_SUPPLY_PROP_CAPACITY, &batt_capa);
+	if (rc < 0)
+		smblib_err(chg, "Couldn't read SOC value, rc=%d\n", rc);
 
 	rc = smblib_get_prop_dc_online(chg, &pval);
 	if (rc < 0) {
@@ -2077,8 +2083,9 @@ int smblib_get_prop_batt_status(struct smb_charger *chg,
 		break;
 	}
 
-	if ((POWER_SUPPLY_HEALTH_WARM == batt_health
-		||POWER_SUPPLY_HEALTH_OVERHEAT == batt_health)
+	if (((batt_capa.intval <= 99) && usb_online)
+		|| (POWER_SUPPLY_HEALTH_WARM == batt_health
+		|| POWER_SUPPLY_HEALTH_OVERHEAT == batt_health)
 		&& (val->intval == POWER_SUPPLY_STATUS_FULL)){
 		val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		return 0;
