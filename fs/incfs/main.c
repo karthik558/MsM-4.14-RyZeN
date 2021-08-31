@@ -41,6 +41,15 @@ DECLARE_FEATURE_FLAG(corefs);
 DECLARE_FEATURE_FLAG(zstd);
 DECLARE_FEATURE_FLAG(v2);
 
+static ssize_t mounter_context_for_backing_rw_show(struct kobject *kobj,
+			  struct kobj_attribute *attr, char *buff)
+{
+	return snprintf(buff, PAGE_SIZE, "supported\n");
+}
+
+static struct kobj_attribute mounter_context_for_backing_rw_attr =
+	__ATTR_RO(mounter_context_for_backing_rw);
+
 static struct attribute *attributes[] = {
 	&corefs_attr.attr,
 	&zstd_attr.attr,
